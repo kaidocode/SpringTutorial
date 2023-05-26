@@ -1,29 +1,30 @@
 package com.example.demoApp.controller;
 
+import com.example.demoApp.data.PersonImplService;
 import com.example.demoApp.model.Person;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 @Controller
 public class AppController {
 
-    Person person1 = new Person(1L,"Kaido",19);
+    @Autowired
+    PersonImplService service = new PersonImplService();
     @GetMapping("/")
     public String index(){
         return "index";
     }
 
-    @GetMapping("/home")
+    @GetMapping("/user/all")
     public String home(Model model){
-        model.addAttribute("peoples", Arrays.asList(
-                new Person(1L,"Kaido",19),
-                new Person(2L,"Ahmed",38),
-                new Person(3L,"Ali",27)
-        ));
+        List<Person> personList = service.findAll();
+        model.addAttribute("peoples", personList);
         return "homePage";
     }
 }
